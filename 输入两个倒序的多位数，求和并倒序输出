@@ -1,0 +1,132 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+struct node{
+	int value;
+	struct node* next;
+	node(int x) :value(x), next(NULL){
+
+	}
+};
+node* addTwoNode_std(node* l1, node* l2){
+	node* p = l1;
+	node* q = l2;
+	bool upFlag = false;
+	int temp = p->value + q->value;
+	if (temp >= 10) upFlag = true;
+	node* head = new node(temp % 10);
+	node* next = head;
+
+	p = p->next;
+	q = q->next;
+	while (p&&q){
+		if (upFlag){
+			temp = p->value + q->value + 1;
+			upFlag = false;
+		}
+		else{
+			temp = p->value + q->value;
+		}
+		node* node_temp = new node(temp % 10);
+		if (temp >= 10) upFlag = true;
+		next->next = node_temp;
+		next = node_temp;
+		p = p->next;
+		q = q->next;
+	}
+	//p为空，q不为空
+	while (!p&&q){
+		if (upFlag){
+			temp = q->value + 1;
+			upFlag = false;
+		}
+		else{
+			temp = q->value;
+		}
+		node* node_temp = new node(temp % 10);
+		if (temp >= 10) upFlag = true;
+		next->next = node_temp;
+		next = node_temp;
+		q = q->next;
+	}
+	while (p&&!q){
+		if (upFlag){
+			temp = p->value + 1;
+			upFlag = false;
+		}
+		else{
+			temp = p->value;
+		}
+		node* node_temp = new node(temp % 10);
+		if (temp >= 10) upFlag = true;
+		next->next = node_temp;
+		next = node_temp;
+		p = p->next;
+	}
+	if (upFlag){
+		node* node_temp = new node(1);
+		upFlag = false;
+		next->next = node_temp;
+		next = node_temp;
+	}
+	return head;
+}
+
+node* addTwoNode(node* node1, node* node2){
+	int pre_node1 = 0, pre_node2 = 0;
+	int count_l = 0, count_r = 0;
+	while (node1){
+		pre_node1 += node1->value*pow(10, count_l);
+		node1 = node1->next;
+		count_l++;
+	}
+	while (node2){
+		pre_node2 += node2->value*pow(10, count_r);
+		node2 = node2->next;
+		count_r++;
+	}
+	int sum = pre_node1 + pre_node2;
+	vector<int> vec;
+	node* head = new node(sum % 10);
+	vec.push_back(sum % 10);
+	node* next = head;
+	int pre = 0;
+	while (sum / 10){
+		sum /= 10;
+		node* nextNode = new node(sum % 10);
+		vec.push_back(sum % 10);
+		next->next = nextNode;
+		next = nextNode;
+	}
+	/*vector<int>::iterator iter = vec.begin();
+	while (iter != vec.end()){
+		cout << *iter << " ";
+		iter++;
+	}
+	cout << endl;*/
+	return head;
+}
+int main(){
+	node node1(2), node2(4), node3(3);
+	node rnode1(5), rnode2(6), rnode3(4);
+	node1.next = &node2;
+	node2.next = &node3;
+
+	rnode1.next = &rnode2;
+	rnode2.next = &rnode3;
+	node *ret2 = addTwoNode_std(&node1, &rnode1);
+	while (ret2){
+		cout << ret2->value << " ";
+		ret2 = ret2->next;
+	}
+	cout << "\n=========================" << endl;
+	node *ret=addTwoNode(&node1, &rnode1);
+	while (ret){
+		cout << ret->value << " ";
+		ret = ret->next;
+	}
+	cout << endl;
+	return 0;
+}
