@@ -1,0 +1,97 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+using namespace std;
+
+template <typename T>
+vector<T> select_2_index_map(vector<T> vec, int sum){
+	map<T, T> map;
+	vector<T> ret;
+	for (int i = 0; i < vec.size(); i++){
+		if (map.find(sum - vec[i]) != map.end()){
+			if (map[sum - vec[i]] != i){
+				ret.push_back(i);
+				ret.push_back(map[sum - vec[i]]);
+			}
+		}
+		map[vec[i]] = i;
+	}
+	return ret;
+}
+template <typename T>
+vector<T> select_2_index(vector<T> vec, int sum){
+	vector<T> ret;
+	for (int i = 0; i < vec.size(); i++){
+		for (int j = i + 1; j < vec.size(); j++){
+			if (vec.at(i) + vec.at(j) == sum){
+				ret.push_back(i);
+				ret.push_back(j);
+			}
+		}
+	}
+	return ret;
+}
+vector<int> select_2_index(int arr[], int n, int sum){
+	vector<int> ret;
+	int i, j;
+	bool flag = false;
+	for( i = 0; i < n; i++){
+		for (j = i + 1; j < n; j++){
+			if (arr[i] + arr[j] == sum){
+				ret.push_back(i);
+				ret.push_back(j);
+			}
+		}
+	}
+	return ret;
+}
+int main(){
+	int arr[10] = { 10, 34, 132, 4, 1, 34, 5, 43, 124, 1 };
+	vector<int> vec;
+	for (int i = 0; i < sizeof(arr) / sizeof(arr[0]); i++){
+		vec.push_back(arr[i]);
+	}
+	vector<int> ret;
+	int count_vec = 0;
+	ret = select_2_index(vec, 44);
+	if (!ret.empty()){
+		vector<int>::iterator iter = ret.begin();
+		while (iter != ret.end()){
+			if (count_vec % 2 == 0){
+				cout << endl;
+			}
+			cout << *iter++ << " ";
+			count_vec++;
+		}
+	}
+	cout <<"\n===========================" << endl;
+	vector<int> ret2=select_2_index(arr, 10, 44);
+	int count_arr = 0;
+	if (!ret.empty()){
+		vector<int>::iterator iter = ret2.begin();
+		while (iter != ret2.end()){
+			if (count_arr % 2 == 0){
+				cout << endl;
+			}
+			cout << *iter++ << " ";
+			count_arr++;
+		}
+	}
+	cout << "\n===========================" << endl;
+	vector<int> ret3;
+	ret3=select_2_index_map(vec, 44);
+	int count = 0;
+	if (!ret3.empty()){
+		vector<int>::iterator iter = ret3.begin();
+		while (iter != ret3.end()){
+			if (count % 2 == 0){
+				cout << endl;
+			}
+			cout << *iter++ << " ";
+			count++;
+		}
+	}
+	cout << endl;
+	return 0;
+}
