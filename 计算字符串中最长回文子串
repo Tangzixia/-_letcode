@@ -1,0 +1,60 @@
+//暴力求解
+#include <iostream>
+#include <string>
+#include <stack>
+#include <vector>
+#include <deque>
+using namespace std;
+
+
+int longest_ror_String(string s,vector<char>& v){
+	int len = s.length();
+	int count, max = 0;
+	bool flag = false;
+	vector<char> vec_temp;
+	for (int i = 0; i < len; i++){
+		int ki = i;
+		count = 0;
+		for (int j = len - 1; j > i; j--){
+			int kj = j;
+			vector<char> vec;
+			while (s[ki] == s[kj]){
+				count++;
+				vec.push_back(s[ki]);
+				if (ki == kj || ki + 1 == kj)
+				{	
+					if (ki == kj){
+						count = (count - 1) * 2 + 1;
+					}
+					else{
+						count = count * 2;
+					}
+					flag = true;
+					vec_temp = vec;
+					break;
+				}
+				ki++;
+				kj--;
+			}
+			if (flag == true) break;
+		}
+		if (max < count) {
+			v = vec_temp;
+			max = count;
+		}
+	}
+	cout << max << endl;
+	return max;
+}
+int main(){
+	string s = "asdfjafhellololleh";
+	string s1 = "level";
+	vector<char> vec;
+	int max=longest_ror_String(s1,vec);
+	vector<char>::iterator iter = vec.begin();
+	while (iter != vec.end()){
+		cout << *iter << endl;
+		iter++;
+	}
+	return 0;
+}
