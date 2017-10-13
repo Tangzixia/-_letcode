@@ -1,0 +1,39 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+int atoi(string str){
+	long result = 0;
+	int i = 0;
+	bool isNegetive = false;
+	int max = 2147483647;
+	int min =2147483647*-1;
+	while (str[i] != '\0'&&str[i] == ' ') i++;
+	if (str[i] == '-'){
+		isNegetive = true;
+		i++;
+	}
+	if (str[i] == '+'){
+		i++;
+	}
+	while (i < str.length()){
+		if (str[i] >= '0'&&str[i] <= '9'){
+			result *= 10;
+			result += (str[i] - '0');
+			i++;
+		}
+		else return min;
+
+		long result_temp = (isNegetive == true) ? -result : result;
+		if (!isNegetive&&result >= max) return max;
+		if (isNegetive && result <= min) return min;
+	}
+	return isNegetive == true ? -result : result;
+}
+
+int main(){
+	string s = "  1234234";
+	cout << atoi(s) << endl;
+	return 0;
+}
