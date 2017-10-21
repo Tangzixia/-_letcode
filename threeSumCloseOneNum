@@ -1,0 +1,74 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int threeSumCloseOneNum(vector<int>& nums, int target){
+	int min = 23123123;
+	int key = 0;
+	sort(nums.begin(), nums.end());
+	for (int i = 0; i < nums.size() - 2;){
+		for (int j = i + 1; j < nums.size() - 1;){
+			for (int k = j + 1; k < nums.size();){
+				int temp = nums[i] + nums[j] + nums[k];
+				int gap = temp - target ? temp - target : target - temp;
+				if (gap < min){
+					min = gap;
+					key = temp;
+					if (gap == 0){
+						return key;
+					}
+				}
+				k++;
+				while (k < nums.size() && nums[k] == nums[k - 1]) k++;
+			}
+			j++;
+			while (j < nums.size() - 1 && nums[j] == nums[j - 1]) j++;
+		}
+		i++;
+		while (i < nums.size() - 2 && nums[i] == nums[i - 1]) i++;
+	}
+}
+int threeSumOneClosestNew(vector<int>& nums, int target){
+	sort(nums.begin(), nums.end());
+	bool isfirst = true;
+	int ret = 0;
+	for (int i = 0; i < nums.size(); i++){
+		int j = i + 1;
+		int k = nums.size() - 1;
+		while (j < k){
+			int sum = nums[i] + nums[j] + nums[k];
+			if (isfirst){
+				ret = sum;
+				isfirst = false;
+			}
+			else{
+				if (abs(sum - target) < abs(ret - target)){
+					ret = sum;
+				}
+			}
+			if (ret == target){
+				return ret;
+			}
+			if (ret > target){
+				k--;
+			}
+			else{
+				j++;
+			}
+		}
+	}
+	return ret;
+}
+int main(){
+	int arr[] = { -1, 2, 1, -4 };
+	vector<int> vec;
+	for (int i = 0; i < sizeof(arr) / sizeof(arr[0]); i++){
+		vec.push_back(arr[i]);
+	}
+	int i = threeSumOneClosestNew(vec, 1);
+	cout << i << endl;
+	return 0;
+}
