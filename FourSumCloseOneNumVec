@@ -1,0 +1,67 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+vector<vector<int>> fourSumCloseOneNumVec(vector<int>& nums, int target){
+	vector<vector<int>> result;
+	if (nums.size() < 4) return result;
+	sort(nums.begin(), nums.end());
+	for (int i = 0; i < nums.size() - 3;){
+		for (int j = i + 1; j < nums.size() - 2;){
+			int start = j + 1;
+			int end = nums.size() - 1;
+			while (start < end){
+				int sum = nums[i] + nums[j] + nums[start] + nums[end];
+				if (sum == target){
+					vector<int> vec;
+					vec.push_back(nums[i]);
+					vec.push_back(nums[j]);
+					vec.push_back(nums[start]);
+					vec.push_back(nums[end]);
+					result.push_back(vec);
+					start++;
+					while (start < end&&nums[start] == nums[start - 1]) start++;
+					end--;
+					while (start < end&&nums[end] == nums[end + 1]) end--;
+				}
+				else if (sum > target){
+					end--;
+					while (start < end&&nums[end] == nums[end + 1]) end--;
+				}
+				else{
+					start++;
+					while (start < end&&nums[start] == nums[start - 1]) start++;
+				}
+			}
+			j++;
+			while (j < nums.size() - 2 && nums[j] == nums[j - 1]) j++;
+		}
+		i++;
+		while (i < nums.size() - 3 && nums[i] == nums[i - 1]) i++;
+	}
+	return result;
+}
+
+int main(){
+	int a[] = { 1, 0, -1, 0, -2, 2 };
+	vector<int> vec;
+	for (int i = 0; i < sizeof(a) / sizeof(a[0]); i++){
+		vec.push_back(a[i]);
+	}
+	vector<vector<int>> vec_res = fourSumCloseOneNumVec(vec, 0);
+	vector<vector<int>>::iterator iter_res = vec_res.begin();
+	while (iter_res != vec_res.end()){
+		vector<int> vec = *iter_res;
+		vector<int>::iterator iter = vec.begin();
+		while (iter != vec.end()){
+			cout << *iter << " ";
+			iter++;
+		}
+		cout << endl;
+		iter_res++;
+	}
+	return 0;
+}
