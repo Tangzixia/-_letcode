@@ -1,0 +1,66 @@
+//1、利用定义解决
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+        if(!head||!head->next) return NULL;
+        ListNode* cur=head;
+        vector<ListNode*> vec;
+        vector<ListNode*>::iterator iter=vec.begin();
+        bool flag=false;
+        while(cur!=NULL){
+            vec.push_back(cur);
+            if(cur->next){
+                iter=find(vec.begin(),vec.end(),cur->next);
+                if(iter!=vec.end()){
+                    flag=true;
+                    cur=*iter;
+                    break;
+                }
+            }else{
+                break;
+            }
+            cur=cur->next;
+        }
+        if(flag==true) return cur;
+        else return NULL;
+    }
+};
+//2、利用简单属性解决
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+        if(!head||!head->next){
+            return NULL;
+        }
+        ListNode *slow=head,*fast=head;
+        while(fast->next!=NULL&&fast->next->next!=NULL){
+            slow=slow->next;
+            fast=fast->next->next;
+            if(slow==fast){
+                slow=head;
+                while(slow!=fast){
+                    slow=slow->next;
+                    fast=fast->next;
+                }
+                return slow;
+            }
+        }
+        return NULL;
+    }
+};
