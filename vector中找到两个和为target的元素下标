@@ -1,0 +1,44 @@
+//1
+vector<int> twoSum(vector<int> &numbers, int target) {
+        vector<int> vec;
+        if(numbers.size()<=1) return vec;
+        map<int,int> hash;
+        for(int i=0;i<numbers.size();i++){
+            if(hash.find(target-numbers[i])!=hash.end()){
+                vec.push_back(hash[target-numbers[i]]+1);
+                vec.push_back(i+1);
+                break;
+            }else{
+                hash[numbers[i]]=i;
+            }
+        }
+        return vec;
+}
+//2
+
+
+class Solution {
+public:
+    vector<int> twoSum(vector<int> &numbers, int target) {
+        vector<int> vec;
+        if(numbers.size()<=1) return vec;
+        vector<int>::iterator iter=numbers.begin();
+        for(int i=0;i<numbers.size();i++){
+            vec.push_back(i+1);
+            if(find(iter+1,numbers.end(),target-numbers[i])!=numbers.end()){
+                int k=i+1;
+                while(k<numbers.size()){
+                    if(numbers[k]==target-numbers[i]){
+                        break;
+                    }
+                    k++;
+                }
+                vec.push_back(k+1);
+                break;
+            }else{
+                vec.pop_back();
+            }
+        }
+        return vec;
+    }
+};
