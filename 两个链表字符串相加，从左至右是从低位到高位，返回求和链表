@@ -1,0 +1,34 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+
+//简单的思路就是从左至右依次判断链表的节点，注意需要判断前面的进位，因此需要在每次循环中使用一个temp用于保存前面的进位，
+//注意对最后一位的判断，如果还需要进位，则需要重新生成节点，因此，需要在循环判断条件中加上一个判断最后一位的进位条件！
+class Solution {
+public:
+    ListNode *addTwoNumbers(ListNode *l1, ListNode *l2) {
+        ListNode* dummy=new ListNode(-1);
+        ListNode* pre=dummy;
+        int temp=0;
+        while(l1||l2||temp!=0){
+            if(l1){
+                temp+=l1->val;
+                l1=l1->next;
+            }
+            if(l2){
+                temp+=l2->val;
+                l2=l2->next;
+            }
+            ListNode* cur=new ListNode(temp%10);
+            pre->next=cur;
+            pre=cur;
+            temp=temp/10;
+        }
+        return dummy->next;
+    }
+};
