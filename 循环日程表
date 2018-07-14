@@ -1,0 +1,54 @@
+/*
+有n=2^k个运动员，其中需要安排他们进行比赛，
+比赛持续n-1天，每个选手需要和n-1个选手各赛一次，
+然额每天却只能比赛一次，求他们的日程安排表。
+*/
+
+/*
+解题思路：
+1）2^k个运动员的日程表安排等价于2^(k-1)个运动员的日程表安排，因此可以递归求解；
+2）递归终止条件为2个运动员在1天的日程安排，因为2个运动员在1天的安排用不到递归；
+3）针对解决思路为：在2^k*2^k的表格安排中，左上角的2^(k-1)*2^(k-1)始终和右下角的
+  2^(k-1)*2^(k-1)元素相同，左下角的2^(k-1)始终和右上角的2^(k-1)*2^(k-1)个元素
+  相同，而且左下角元素的值始终是左上角元素的值加上k的值，因此通过这种分析我们可以选择
+  使用迭代实现或者递归实现。
+*/
+
+//n=2^k个运动员
+void GameTable(vector<vector<int> > &vec){
+  if(vec.size()==0){
+    return 0;
+  }
+  size_t s=vec.size();
+  int k=0;
+  while(s=s/2){
+    k++;
+  }
+  vec[0][0]=1;
+  vec[0][1]=2;
+  vec[1][0]=2;
+  vec[1][1]=1;
+  for(int i=2;i<=k;i++){
+    int length=2^i;
+    int half=length/2;
+    //计算左下角安排
+    for(int row=0;row<half;row++){
+      for(int col=0;col<half;col++){
+        vec[row+half][col]=vec[row][col]+half;
+      }
+    }
+    //计算右上角安排
+    for(int row=0;row<half;row++){
+      for(int col=0;col<half;col++){
+        vec[row][col+half]=vec[row+half][col];
+      }
+    }
+    //计算右下角安排
+    for(int row=0;row<half;row++){
+      for(int col=0;col<half;col++){
+        vec[row+half][col+half]=vec[row][col];
+      }
+    }
+  return vec;
+}
+    
