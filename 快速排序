@@ -1,0 +1,40 @@
+/**
+这里主要讲解快速排序的思路，
+利用分治法进行求解，
+1）划分；2）递归求解；3）合并（在划分的时候我们已经考虑过相关的设计了，因此不需要这一步）
+*/
+
+void quickSort(int* a,int l,int r){
+  if(l<r){
+    int pivot=a[l];
+    int i=l,j=r;
+    while(i<j){
+      //从右往左找到第一个小于pivot的值，放到pivot原始位置的左边去；
+      while(i<j&&s[j]>=pivot){
+        j--;
+      }
+      if(i<j) s[i++]=s[j];
+      //从左往右找到第一个大于pivot的值，放到pivot原始位置的右边去，如此划分
+      while(i<j&&s[i]>pivot){
+        i++);
+      }
+      if(i<j) s[j++]=s[i];
+    }
+    s[i]=pivot;
+    quickSort(a,l,i);
+    quickSort(a,i+1,r);
+  }
+}
+
+
+//其实，我更喜欢下面这种解法，以空间换时间，很清晰，不用设置i,j在那边挣扎，很清晰
+//不过暂时是伪代码，有时间再来改吧
+
+def quicksort(array):
+  if len(array) < 2:
+    return array
+  else:
+    pivot = array[0]
+  less = [i for i in array[1:] if i <= pivot]
+  greater = [i for i in array[1:] if i > pivot]
+  return quicksort(less) + [pivot] + quicksort(greater)
