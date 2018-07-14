@@ -51,4 +51,28 @@ void GameTable(vector<vector<int> > &vec){
     }
   return vec;
 }
-    
+
+//当然这个问题也可以通过递归求解
+//row,col代表行，列，n=2^k代表运动员的个数
+void helGen(vector<vector<int> > vec,int beg_row ,int n,int beg_col, int n){
+  
+  int half_row=beg_row+(n-beg_row)/2;
+  int half_col=beg_col+(n-beg_col)/2;
+  int half=(n-beg_row)/2;
+  if (half_row-beg_row==1){
+    for(int row=beg_row;row<=half_row;row++){
+      for(int col=beg_col;col<=half_col;col++){
+          vec[row+half_row][col+half_col]=vec[row][col];
+      }
+    }
+    for(int row=beg_row;row<=half_row;row++){
+      for(int col=beg_col;col<=half_col;col++){
+          vec[row+half_row][col]=vec[row][col_half_row]=vec[row][col]+half;
+      }
+    }
+  }
+  helGen(vec,0,half_row,0,half_col);
+  helGen(vec,half_row+1,n,0,half_col);
+  helGen(vec,0,half_row,half_col+1,n);
+  helGen(vec,half_row+1,n,half_col+1,n);
+}
